@@ -4,30 +4,32 @@ public class GraphProblem {
 
     public static void main(String args[]) {
         Graph graph = new Graph();
-        graph.addEdge('A', 'B');
-        graph.addEdge('B', 'C');
-        graph.addEdge('B', 'E');
-        graph.addEdge('C', 'D');
-        graph.addEdge('C', 'E');
-        graph.addEdge('C', 'G');
-        graph.addEdge('D', 'E');
-        graph.addEdge('E', 'F');
-        bfs(graph, 'A');
+        graph.addEdge("A", "B");
+        graph.addEdge("B", "C");
+        graph.addEdge("B", "E");
+        graph.addEdge("C", "D");
+        graph.addEdge("C", "E");
+        graph.addEdge("C", "G");
+        graph.addEdge("D", "E");
+        graph.addEdge("E", "F");
+        graph.addEdge("E", "2424b");
+        graph.addEdge("2323a", "2424b");
+        bfs(graph, "A");
         print(null);
-        shortestPath(graph, 'B', 'G');
+        shortestPath(graph, "B", "G");
         print(null);
-        shortestPath(graph, 'G', 'A');
+        shortestPath(graph, "G", "A");
         print(null);
-        findPaths(graph, 'A', 'E', 3);
+        findPaths(graph, "A", "E", 3);
         print(null);
-        findPaths(graph, 'B', 'B', 3);
+        findPaths(graph, "B", "2323a", 3);
 
     }
 
     private static class Graph {
-        private Map<Character, List<Character>> neighbours = new HashMap<>();
+        private Map<String, List<String>> neighbours = new HashMap<>();
 
-        public void addEdge(Character vertex1, Character vertex2) {
+        public void addEdge(String vertex1, String vertex2) {
             neighbours.computeIfAbsent(vertex1, key -> {
                 return new LinkedList<>();
             }).add(vertex2);
@@ -37,12 +39,12 @@ public class GraphProblem {
         }
     }
 
-    private static final void bfs(Graph graph, Character source) {
+    private static final void bfs(Graph graph, String source) {
         class BfsNode {
-            private Character vertex;
+            private String vertex;
             private int count;
 
-            private BfsNode(Character vertex, int count) {
+            private BfsNode(String vertex, int count) {
                 this.vertex = vertex;
                 this.count = count;
             }
@@ -52,7 +54,7 @@ public class GraphProblem {
         List<BfsNode> list = new ArrayList<>();
         list.add(new BfsNode(source, 0));
 
-        Set<Character> visited = new HashSet<>();
+        Set<String> visited = new HashSet<>();
         visited.add(source);
 
         int tail = 0;
@@ -62,7 +64,7 @@ public class GraphProblem {
             tempBfsNode = list.get(tail++);
             final int tempCount = tempBfsNode.count;
             print("distance from " + source + " to " + tempBfsNode.vertex + " : " + tempCount);
-            List<Character> neighoursList = graph.neighbours.get(tempBfsNode.vertex);
+            List<String> neighoursList = graph.neighbours.get(tempBfsNode.vertex);
             if (neighoursList == null) {
                 continue;
             }
@@ -75,17 +77,17 @@ public class GraphProblem {
         }
     }
 
-    private static final void shortestPath(Graph graph, Character source, Character target) {
+    private static final void shortestPath(Graph graph, String source, String target) {
         findPaths(graph, source, target, 1);
     }
 
-    private static final void findThreePath(Graph graph, Character source, Character target) {
+    private static final void findThreePath(Graph graph, String source, String target) {
         findPaths(graph, source, target, 3);
     }
 
-    private static final void findPaths(Graph graph, Character source, Character target, int count) {
+    private static final void findPaths(Graph graph, String source, String target, int count) {
         int tempCount = 0;
-        Set<Character> visited = new HashSet<>();
+        Set<String> visited = new HashSet<>();
         if (source.equals(target)) {
             tempCount++;
             print(source.toString());
@@ -96,28 +98,26 @@ public class GraphProblem {
             visited.add(source);
         }
 
-        List<Character> list = new ArrayList<>();
+        List<String> list = new ArrayList<>();
         list.add(source);
 
 
-
-
-        Map<Character, Character> predecessor = new HashMap<>();
+        Map<String, String> predecessor = new HashMap<>();
         int tail = 0;
 
 
         while (tail < list.size()) {
-            Character vertex = list.get(tail++);
-            List<Character> neighoursList = graph.neighbours.get(vertex);
+            String vertex = list.get(tail++);
+            List<String> neighoursList = graph.neighbours.get(vertex);
             if (neighoursList == null) {
                 continue;
             }
-            for (Character c : neighoursList) {
+            for (String c : neighoursList) {
                 if (!visited.contains(c)) {
                     if (c.equals(target)) {
                         StringBuilder path = new StringBuilder().append(c);
                         tempCount++;
-                        Character temp = vertex;
+                        String temp = vertex;
                         while (!temp.equals(source)) {
                             path.append(" >- ");
                             path.append(temp);
@@ -144,4 +144,3 @@ public class GraphProblem {
         System.out.println(str == null ? "" : str);
     }
 }
-
